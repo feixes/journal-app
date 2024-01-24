@@ -2,12 +2,47 @@
 import { Button, Grid, Link, TextField, Typography } from "@mui/material"
 import { Link as RouterLink } from "react-router-dom"
 import { AuthLayout } from "../layout/AuthLayout"
+import { useForm } from "../../hooks"
+
+const formData = {
+    email: 'xavier@xavi.com',
+    password: '1234',
+    displayName: 'Xavier Feixas'
+}
+
 
 export const RegisterPage = () => {
+
+    const {
+        displayName,
+        email,
+        password,
+        onInputChange,
+        formState,
+        isFormValid,
+        passwordValid,
+        emailValid,
+        displayNameValid
+    } = useForm(formData, formValidations)
+
+    const formValidations = {
+        email: [(value) => value.includes('@'), 'El correo debe de tener una @'],
+        password: [(value) => value.length >= 6, 'La contraseña debe de tener más de 6 letras'],
+        displayName: [(value) => value.length >= 1, 'El nombre es obligatorio'],
+
+    }
+
+
+    const onSubmit = (event) => {
+        event.preventDefault()
+        console.log(formState)
+    }
+
+
     return (
 
         <AuthLayout title='Crear cuenta'>
-            <form>
+            <form onSubmit={onSubmit}>
 
                 <Grid container >
                     <Grid item xs={12} sx={{ mt: 2 }}>
@@ -16,6 +51,11 @@ export const RegisterPage = () => {
                             type="text"
                             placeholder="nombre completo"
                             fullWidth
+                            name='displayName'
+                            value={displayName}
+                            onChange={onInputChange}
+                            error={!displayNameValid}
+                            helperText='El nombre debe tener más de 6 letras'
                         />
                     </Grid>
 
@@ -25,15 +65,21 @@ export const RegisterPage = () => {
                             type="email"
                             placeholder="email@email.com"
                             fullWidth
+                            name='email'
+                            value={email}
+                            onChange={onInputChange}
                         />
                     </Grid>
 
                     <Grid item xs={12} sx={{ mt: 2 }}>
                         <TextField
-                            label="password"
+                            label="Contraseña"
                             type="pasword"
                             placeholder="password"
                             fullWidth
+                            name='password'
+                            value={password}
+                            onChange={onInputChange}
                         />
                     </Grid>
 
