@@ -40,7 +40,8 @@ export const RegisterPage = () => {
     const onSubmit = (event) => {
         event.preventDefault()
         setFormSubmitted(true)
-        console.log(formState)
+
+        if (!isValidForm) return
     }
 
 
