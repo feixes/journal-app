@@ -4,10 +4,12 @@ import { Link as RouterLink } from "react-router-dom"
 import { AuthLayout } from "../layout/AuthLayout"
 import { useForm } from "../../hooks"
 import { useState } from "react"
+import { useDispatch } from "react-redux"
+import { startCreatingUserWithEmailPassword } from "../../store/auth/thunks"
 
 const formData = {
     email: 'xavier@xavi.com',
-    password: '1234',
+    password: '123456',
     displayName: 'Xavier Feixas'
 }
 
@@ -20,6 +22,8 @@ const formValidations = {
 }
 
 export const RegisterPage = () => {
+
+    const dispatch = useDispatch()
 
     const [formSubmitted, setFormSubmitted] = useState(false)
 
@@ -41,7 +45,9 @@ export const RegisterPage = () => {
         event.preventDefault()
         setFormSubmitted(true)
 
-        if (!isValidForm) return
+        if (!isFormValid) return
+
+        dispatch(startCreatingUserWithEmailPassword(formState))
     }
 
 
